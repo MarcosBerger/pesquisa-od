@@ -9,7 +9,7 @@ import plot_migration
 from data_munging import ALL_STATES_TITLE
 
 padding = 0
-st.set_page_config(page_title="RMSP: Origem-Destino", layout="wide", page_icon="📍")
+st.set_page_config(page_title="Migration Network", layout="wide", page_icon="📍")
 
 st.markdown(
     """
@@ -31,16 +31,16 @@ state_coordinates = data_munging.get_coordinates()
 state_migration = pd.read_csv("data/state_migration.csv")
 state_summary = pd.read_csv("data/state_migration_summary.csv")
 
-st.title("Origem-Destino")
+st.title("State Movement")
 state_choices = list(state_coordinates["name"])
 state_choices.insert(0, ALL_STATES_TITLE)
 
 
 with st.sidebar.form(key="my_form"):
-    selectbox_state = st.selectbox("Escolha um setor", state_choices)
-    selectbox_direction = st.selectbox("Escolha os fluxos", ["Parte daqui", "Chega aqui"])
+    selectbox_state = st.selectbox("Choose a state", state_choices)
+    selectbox_direction = st.selectbox("Choose a direction", ["Incoming", "Outgoing"])
     numberinput_threshold = st.number_input(
-        """Número de fluxos para mostrar""",
+        """Set top N Migration per state""",
         value=3,
         min_value=1,
         max_value=25,
@@ -49,12 +49,12 @@ with st.sidebar.form(key="my_form"):
     )
 
     st.markdown(
-        '<p class="small-font">Resultados limitados a 5</p>',
+        '<p class="small-font">Results Limited to top 5 per State in overall US</p>',
         unsafe_allow_html=True,
     )
-    pressed = st.form_submit_button("Construir mapa de fluxos")
+    pressed = st.form_submit_button("Build Migration Map")
 
-expander = st.sidebar.expander("O que é isso?")
+expander = st.sidebar.expander("What is this?")
 expander.write(
     """
 This app allows users to view migration between states from 2018-2019.
